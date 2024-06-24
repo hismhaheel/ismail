@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Information Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select {
+      width: 100%;
+      height: 40px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="userForm">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <div class="form-group">
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender" required>
+        <option value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="terms">Agree to Terms:</label>
+      <input type="checkbox" id="terms" name="terms" required>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById("userForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent form submission
+      
+      // Fetch form values
+      var name = document.getElementById("name").value.trim();
+      var email = document.getElementById("email").value.trim();
+      var password = document.getElementById("password").value;
+      var gender = document.getElementById("gender").value;
+      var terms = document.getElementById("terms").checked;
+      
+      // Validate name
+      if (name === "") {
+        showError("name", "Name is required");
+        return;
+      } else if (!/^[a-zA-Z]+$/.test(name)) {
+        showError("name", "Name must contain only letters");
+        return;
+      }
+      
+      // Validate email
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showError("email", "Invalid email format");
+        return;
+      }
+      
+      // Validate password length
+      if (password.length < 6) {
+        showError("password", "Password must be at least 6 characters long");
+        return;
+      }
+      
+      // Validate gender selection
+      if (gender === "") {
+        showError("gender", "Please select your gender");
+        return;
+      }
+      
+      // Validate terms checkbox
+      if (!terms) {
+        showError("terms", "Please agree to the terms");
+        return;
+      }
+      
+      // If all validations pass, submit the form
+      alert("Form submitted successfully!");
+    });
+
+    function showError(inputId, errorMessage) {
+      var inputField = document.getElementById(inputId);
+      var errorElement = document.createElement("div");
+      errorElement.className = "error-message";
+      errorElement.innerText = errorMessage;
+      
+      var parent = inputField.parentElement;
+      parent.appendChild(errorElement);
+      
+      setTimeout(function() {
+        errorElement.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
